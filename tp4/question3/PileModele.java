@@ -14,36 +14,65 @@ public class PileModele<T> extends  java.util.Observable implements PileI<T> {
         this.pile = pile;
     }
 
-    public void empiler(T o) throws PilePleineException {
-      pile.empiler(o);
-      setChanged();
-      notifyObservers(o);
-    }
+     public void empiler(T o) throws PilePleineException {
+        if (estPleine()) throw new PilePleineException(o.toString());
+        try{
+            this.pile.empiler(o);
+        }catch(Exception e){
 
+        }finally{
+            setChanged();
+            notifyObservers();
+        } 
+    }
+    /**Dépiler.
+     * @return l'état de la pile avec un élément en moins.
+     */
     public T depiler() throws PileVideException {
+        if (estVide()) throw new PileVideException();
+        
+        try{
+            return this.pile.depiler();
+        }catch(Exception e){
+            
+        }finally{
+            setChanged();
+            notifyObservers();
+        }
         return null;
     }
-
+    /**Retourne le sommet de la pile.
+     * @return le sommet.
+     */
     public T sommet() throws PileVideException {
-        return null;
+        if (estVide()) throw new PileVideException();
+        return  this.pile.sommet();
     }
-
+    /**Retourne le nombre d'éléments de la pile.
+     * @return la taille.
+     */
     public int taille() {
         return pile.taille();
     }
-
+    /**Donne le nombre d'éléments maximum que peut contenir la pile.
+     * @return la capacité.
+     */
     public int capacite() {
         return pile.capacite();
     }
-
+    /**Retourne vrai si la pile est vide.
+     * @return vrai si vide.
+     */
     public boolean estVide() {
         return pile.estVide();
     }
-
+    /**Retourne vrai si la pile est pleine.
+     * @return vrai si pleine.
+     */
     public boolean estPleine() {
         return pile.estPleine();
     }
-
+    /**Méthode toString.*/
     public String toString() {
         return pile.toString();
     }
